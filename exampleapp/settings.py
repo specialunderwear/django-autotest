@@ -30,7 +30,7 @@ ROOT_URLCONF = 'exampleapp.urls'
 
 INSTALLED_APPS = (
     'django.contrib.staticfiles',
-	'autotest'
+    'autotest'
   )
 
 
