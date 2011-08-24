@@ -6,5 +6,10 @@ message=$2
 icon=$3
 
 
-which growlnotify && growlnotify --image "$icon" -m "$message" "$title" || \
-which notify-send && notify-send "$title" "$message" -i "$icon"
+if type -P growlnotify >/dev/null; then
+	growlnotify --image "$icon" -m "$message" "$title"
+else 
+	if type -P notify-send >/dev/null; then
+	notify-send "$title" "$message" -i "$icon"
+	fi
+fi
