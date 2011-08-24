@@ -25,7 +25,9 @@ class LoggingEventHandler(FileSystemEventHandler):
 
         chdir(settings.PROJECT_ROOT)
         result = Popen(['./manage.py', 'autotestrunner', app_name], stdout=PIPE, stderr=PIPE, close_fds=True).communicate() 
-
+        
+        print result
+        
         title = ''
         content = ''
         for line in result:
@@ -33,11 +35,12 @@ class LoggingEventHandler(FileSystemEventHandler):
             for l in split_lines:
                 if l.startswith('Ran'):
                     title = l
-                if l.startswith('OK') or l.startswith('FAIL'):
+                if l.startswith('FAIL'):
                     content = l
-
-        chdir(AUTOTEST_PATH)
-        os.system('./notify.sh "{0}" "{1}" '.format(title, content))
+                    
+        if content:
+            chdir(AUTOTEST_PATH)
+            os.system('./notify.sh "{0}" "{1}" '.format(title, content))
         
 
     def on_modified(self, event):
