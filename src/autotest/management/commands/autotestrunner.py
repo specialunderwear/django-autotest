@@ -1,6 +1,10 @@
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
+try:
+    from south.management.commands import patch_for_test_db_setup
+except ImportError:
+    patch_for_test_db_setup = list
 
 def get_runner(settings):
     runner = 'autotest.testrunner.AutotestSuiteRunner'
@@ -24,7 +28,7 @@ class Command(BaseCommand):
     requires_model_validation = False
 
     def handle(self, *test_labels, **options):
-      
+        patch_for_test_db_setup()
         TestRunner = get_runner(settings)
         
         if hasattr(TestRunner, 'func_name'):
