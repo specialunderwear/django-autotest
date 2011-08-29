@@ -1,3 +1,4 @@
+import re
 import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler 
@@ -17,6 +18,7 @@ def absolute_path(path):
 
     return os.path.abspath(os.path.normpath(path))
 
+ERROR_REGEX = re.compile(r"FAIL:|ERROR:")
 
 class LoggingEventHandler(FileSystemEventHandler):
 
@@ -26,21 +28,21 @@ class LoggingEventHandler(FileSystemEventHandler):
         chdir(settings.PROJECT_ROOT)
         result = Popen(['./manage.py', 'autotestrunner', app_name], stdout=PIPE, stderr=PIPE, close_fds=True).communicate() 
         
-        print result
+        print "".join(result)
         
         title = ''
-        content = ''
+        content = []
         for line in result:
             split_lines = line.split('\n')
             for l in split_lines:
                 if l.startswith('Ran'):
                     title = l
-                if l.startswith('FAIL'):
-                    content = l
-                    
+                if ERROR_REGEX.match(l):
+                    content.append(l)
+        
         if content:
             chdir(AUTOTEST_PATH)
-            os.system('./notify.sh "{0}" "{1}" '.format(title, content))
+            os.system('./notify.sh "{0}" "{1}" '.format(title, "\n".join(content)))
         
 
     def on_modified(self, event):
