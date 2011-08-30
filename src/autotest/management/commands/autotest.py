@@ -25,7 +25,7 @@ class LoggingEventHandler(FileSystemEventHandler):
 
     def run_test_suite(self, app_name):
 
-        chdir(settings.PROJECT_ROOT)
+        chdir(settings.PROJECT_DIR)
         result = Popen(['./manage.py', 'autotestrunner', app_name], stdout=PIPE, stderr=PIPE, close_fds=True).communicate() 
         
         print "".join(result)
@@ -65,7 +65,7 @@ class Command(BaseCommand):
         #handler = AutotestEventHandler()
         handler = LoggingEventHandler()
 
-        app_path = absolute_path(settings.PROJECT_ROOT)
+        app_path = absolute_path(settings.PROJECT_DIR)
 
         observer = Observer()
         observer.schedule(handler, path=app_path, recursive=True)

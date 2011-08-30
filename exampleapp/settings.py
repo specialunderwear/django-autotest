@@ -34,6 +34,6 @@ INSTALLED_APPS = (
   )
 
 
-PROJECT_ROOT = abspath(dirname(__file__))
+PROJECT_DIR = abspath(dirname(__file__))
 
 

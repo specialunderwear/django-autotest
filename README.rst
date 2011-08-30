@@ -23,16 +23,16 @@ download the tarball and run ``python setup.py install``
 
 
 
-3. Add a PROJECT_ROOT variable to ``settings.py`` with the absolute path to your Django application. 
+3. Add a PROJECT_DIR variable to ``settings.py`` with the absolute path to your Django application. 
 
 ::
 
 	from os.path import abspath, dirname 
 
-	PROJECT_ROOT = abspath(dirname(__file__))
+	PROJECT_DIR = abspath(dirname(__file__))
 	
 	# or if you have already defined that for another purposes ( templates for example )
-	PROJECT_ROOT = MY_PROJECT_ROOT_DIRECTORY
+	PROJECT_DIR = MY_PROJECT_DIR_DIRECTORY
 
 
 =========
